@@ -1058,7 +1058,7 @@ void OBS::DrawStatusBar(DRAWITEMSTRUCT &dis)
         rc.left += 22;
 
         String strKBPS;
-        strKBPS << IntString((statusBarData.bytesPerSec*8) >> 10) << TEXT("kb/s");
+        strKBPS << IntString((statusBarData.bytesPerSec*8) / 1000) << TEXT("kb/s");
         //strKBPS << IntString(rand()) << TEXT("kb/s");
         DrawText(hdcTemp, strKBPS, strKBPS.Length(), &rc, DT_VCENTER|DT_SINGLELINE|DT_LEFT);
     }
