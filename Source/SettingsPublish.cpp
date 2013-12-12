@@ -158,6 +158,20 @@ void SettingsPublish::ApplySettings()
     if(startStreamHotkey)
         App->startStreamHotkeyID = API->CreateHotkey(startStreamHotkey, OBS::StartStreamHotkey, NULL);
 
+	//------------------------------------------
+
+    DWORD sendCuePointHotkey = (DWORD)SendMessage(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY), HKM_GETHOTKEY, 0, 0);
+    AppConfig->SetInt(TEXT("Publish"), TEXT("SendCuePointHotkey"), sendCuePointHotkey);
+
+    if(App->sendCuePointHotkeyID)
+    {
+		API->DeleteHotkey(App->sendCuePointHotkeyID);
+		App->sendCuePointHotkeyID = 0;
+    }
+
+    if(sendCuePointHotkey)
+        App->sendCuePointHotkeyID = API->CreateHotkey(sendCuePointHotkey, OBS::SendCuePointHotkey, NULL);
+
     //------------------------------------------
 
     App->strDashboard = GetEditText(GetDlgItem(hwnd, IDC_DASHBOARDLINK)).KillSpaces();
@@ -456,6 +470,8 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
                     AdjustWindowPos(GetDlgItem(hwnd, IDC_STARTSTREAMHOTKEY_STATIC), 0, -data->fileControlOffset);
                     AdjustWindowPos(GetDlgItem(hwnd, IDC_STARTSTREAMHOTKEY), 0, -data->fileControlOffset);
                     AdjustWindowPos(GetDlgItem(hwnd, IDC_CLEARHOTKEY_STARTSTREAM), 0, -data->fileControlOffset);
+					AdjustWindowPos(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY_STATIC), 0, -data->fileControlOffset);
+					AdjustWindowPos(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY), 0, -data->fileControlOffset);
                 }
 
                 //--------------------------------------------
@@ -467,6 +483,11 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
 
                 DWORD stopHotkey = AppConfig->GetInt(TEXT("Publish"), TEXT("StopStreamHotkey"));
                 SendMessage(GetDlgItem(hwnd, IDC_STOPSTREAMHOTKEY), HKM_SETHOTKEY, stopHotkey, 0);
+
+                //--------------------------------------------
+
+                DWORD sendCuePointHotkey = AppConfig->GetInt(TEXT("Publish"), TEXT("SendCuePointHotkey"));
+                SendMessage(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY), HKM_SETHOTKEY, sendCuePointHotkey, 0);
 
                 //--------------------------------------------
 
@@ -569,6 +590,8 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
                                 AdjustWindowPos(GetDlgItem(hwnd, IDC_STARTSTREAMHOTKEY_STATIC), 0, data->fileControlOffset);
                                 AdjustWindowPos(GetDlgItem(hwnd, IDC_STARTSTREAMHOTKEY), 0, data->fileControlOffset);
                                 AdjustWindowPos(GetDlgItem(hwnd, IDC_CLEARHOTKEY_STARTSTREAM), 0, data->fileControlOffset);
+								AdjustWindowPos(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY_STATIC), 0, data->fileControlOffset);
+                                AdjustWindowPos(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY), 0, data->fileControlOffset);
                             }
                             else if(mode == 1 && data->mode == 0)
                             {
@@ -581,6 +604,8 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
                                 AdjustWindowPos(GetDlgItem(hwnd, IDC_STARTSTREAMHOTKEY_STATIC), 0, -data->fileControlOffset);
                                 AdjustWindowPos(GetDlgItem(hwnd, IDC_STARTSTREAMHOTKEY), 0, -data->fileControlOffset);
                                 AdjustWindowPos(GetDlgItem(hwnd, IDC_CLEARHOTKEY_STARTSTREAM), 0, -data->fileControlOffset);
+								AdjustWindowPos(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY_STATIC), 0, -data->fileControlOffset);
+                                AdjustWindowPos(GetDlgItem(hwnd, IDC_SENDCUEPOINTHOTKEY), 0, -data->fileControlOffset);
                             }
 
                             data->mode = mode;
@@ -758,6 +783,7 @@ INT_PTR SettingsPublish::ProcMessage(UINT message, WPARAM wParam, LPARAM lParam)
 
                     case IDC_STARTSTREAMHOTKEY:
                     case IDC_STOPSTREAMHOTKEY:
+					case IDC_SENDCUEPOINTHOTKEY:
                     case IDC_DASHBOARDLINK:
                         if(HIWORD(wParam) == EN_CHANGE)
                             SetChangedSettings(true);

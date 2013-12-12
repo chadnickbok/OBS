@@ -283,6 +283,9 @@
 #define IDC_SKIPPEDFRAMES               1166
 #define IDC_BYTESTRANSFERRED            1167
 #define IDC_TOTALFRAMES2                1168
+#define IDC_SENDCUEPOINTHOTKEY          1169
+#define IDC_SENDCUEPOINTHOTKEY_STATIC   1170
+#define IDC_CLEARHOTKEY_CUEPOINT        1171
 #define IDA_SOURCE_MOVEUP               40018
 #define IDA_SOURCE_MOVEDOWN             40019
 #define IDA_SOURCE_MOVETOTOP            40020

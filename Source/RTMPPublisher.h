@@ -125,6 +125,7 @@ protected:
     UINT totalVideoFrames;
     UINT numPFramesDumped;
     UINT numBFramesDumped;
+	UINT lastTimestamp;
 
     BYTE *dataBuffer;
     int dataBufferSize;
@@ -171,4 +172,5 @@ public:
     QWORD GetCurrentSentBytes();
     DWORD NumDroppedFrames() const;
     DWORD NumTotalVideoFrames() const {return totalVideoFrames;}
+	UINT GetLastTimestamp() const {return lastTimestamp;}
 };

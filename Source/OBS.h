@@ -99,7 +99,8 @@ enum PacketType
     PacketType_VideoLow,
     PacketType_VideoHigh,
     PacketType_VideoHighest,
-    PacketType_Audio
+    PacketType_Audio,
+	PacketType_Meta
 };
 
 class NetworkStream
@@ -113,6 +114,7 @@ public:
     virtual QWORD GetCurrentSentBytes()=0;
     virtual DWORD NumDroppedFrames() const=0;
     virtual DWORD NumTotalVideoFrames() const=0;
+	virtual UINT GetLastTimestamp() const=0;
 };
 
 //-------------------------------------------------------------------
@@ -776,6 +778,7 @@ private:
     UINT muteDesktopHotkeyID;
     UINT startStreamHotkeyID;
     UINT stopStreamHotkeyID;
+	UINT sendCuePointHotkeyID;
 
     bool bStartStreamHotkeyDown, bStopStreamHotkeyDown;
 
@@ -887,6 +890,7 @@ private:
     static void STDCALL PushToTalkHotkey(DWORD hotkey, UPARAM param, bool bDown);
     static void STDCALL MuteMicHotkey(DWORD hotkey, UPARAM param, bool bDown);
     static void STDCALL MuteDesktopHotkey(DWORD hotkey, UPARAM param, bool bDown);
+	static void STDCALL SendCuePointHotkey(DWORD hotkey, UPARAM param, bool bDown);
 
     void UpdateAudioMeters();
 

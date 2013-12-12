@@ -219,6 +219,7 @@ Settings.Publish.Service="Streaming Service:"
 Settings.Publish.StartStreamHotkey="Start Stream Hotkey:"
 Settings.Publish.StopStreamHotkey="Stop Stream Hotkey:"
 Settings.Publish.Username="User Name (if any):"
+Settings.Publish.SendCuePointHotkey="Send CuePoint Hotkey:"
 
 Settings.Publish.Mode.FileOnly="File Output Only"
 Settings.Publish.Mode.LiveStream="Live Stream"

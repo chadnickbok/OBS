@@ -78,6 +78,7 @@ public:
     QWORD GetCurrentSentBytes() {return 0;}
     DWORD NumDroppedFrames() const {return 0;}
     DWORD NumTotalVideoFrames() const {return 1;}
+	UINT GetLastTimestamp() const {return 0;}
 };
 
 

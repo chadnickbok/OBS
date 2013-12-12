@@ -639,6 +639,8 @@ void RTMPPublisher::SendPacketForReal(BYTE *data, UINT size, DWORD timestamp, Pa
                 queuedPacket->data.TransferFrom(paddedData);
                 queuedPacket->timestamp = timestamp;
                 queuedPacket->type = type;
+
+				lastTimestamp = timestamp;
             }
             else
             {
@@ -1352,9 +1354,32 @@ void RTMPPublisher::SendLoop()
             //--------------------------------------------
 
             RTMPPacket packet;
-            packet.m_nChannel = (type == PacketType_Audio) ? 0x5 : 0x4;
+			switch (type) {
+			case (PacketType_Audio):
+				packet.m_nChannel = 0x05;
+				break;
+			case (PacketType_Meta):
+				packet.m_nChannel = 0x03;
+				break;
+			default:
+				packet.m_nChannel = 0x04;
+				break;
+			}
+
             packet.m_headerType = RTMP_PACKET_SIZE_MEDIUM;
-            packet.m_packetType = (type == PacketType_Audio) ? RTMP_PACKET_TYPE_AUDIO : RTMP_PACKET_TYPE_VIDEO;
+            
+			switch (type) {
+			case (PacketType_Audio):
+				packet.m_packetType = RTMP_PACKET_TYPE_AUDIO;
+				break;
+			case (PacketType_Meta):
+				packet.m_packetType = RTMP_PACKET_TYPE_INFO;
+				break;
+			default:
+				packet.m_packetType = RTMP_PACKET_TYPE_VIDEO;
+				break;
+			}
+
             packet.m_nTimeStamp = timestamp;
             packet.m_nInfoField2 = rtmp->m_stream_id;
             packet.m_hasAbsTimestamp = TRUE;

@@ -51,6 +51,7 @@ class NullNetwork : public NetworkStream
     QWORD GetCurrentSentBytes() {return bytesSent;}
     virtual DWORD NumDroppedFrames() const {return 0;}
     virtual DWORD NumTotalVideoFrames() const {return framesRendered;}
+	virtual UINT GetLastTimestamp() const {return 0;}
 private:
     QWORD bytesSent;
     DWORD framesRendered;

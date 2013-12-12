@@ -18,6 +18,7 @@
 
 
 #include "Main.h"
+#include "RTMPStuff.h"
 
 
 void STDCALL OBS::StartStreamHotkey(DWORD hotkey, UPARAM param, bool bDown)
@@ -76,3 +77,37 @@ void STDCALL OBS::MuteDesktopHotkey(DWORD hotkey, UPARAM param, bool bDown)
     App->desktopVol = ToggleVolumeControlMute(GetDlgItem(hwndMain, ID_DESKTOPVOLUME));
 }
 
+SAVC(onTextData);
+SAVC(text);
+SAVC(HelloWorld);
+
+void STDCALL OBS::SendCuePointHotkey(DWORD hotkey, UPARAM param, bool bDown)
+{
+	if (!bDown) return;
+
+	if (!App->bRunning) return;
+
+	char data[2048] = { 0 };
+	char *cur_data = data;
+	char *pend = data + sizeof(data);
+	UINT size;
+
+	cur_data = AMF_EncodeString((char *) cur_data, (char *) pend, &av_onTextData);
+	*cur_data = AMF_OBJECT;
+	cur_data++;
+
+	cur_data = AMF_EncodeNamedString(cur_data, pend, &av_text, &av_HelloWorld);
+
+	*cur_data = 0;
+	cur_data++;
+	*cur_data = 0;
+	cur_data++;
+	*cur_data = AMF_OBJECT_END;
+	cur_data++;
+
+	size = cur_data - data;
+
+	DWORD timestamp = App->network->GetLastTimestamp();
+
+	App->network->SendPacket((BYTE *)data, size, timestamp, PacketType_Meta);
+}

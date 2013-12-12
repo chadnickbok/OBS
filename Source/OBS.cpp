@@ -1253,6 +1253,7 @@ void OBS::ReloadIniSettings()
     QuickClearHotkey(muteDesktopHotkeyID);
     QuickClearHotkey(stopStreamHotkeyID);
     QuickClearHotkey(startStreamHotkeyID);
+	QuickClearHotkey(sendCuePointHotkeyID);
 
     bUsingPushToTalk = AppConfig->GetInt(TEXT("Audio"), TEXT("UsePushToTalk")) != 0;
     DWORD hotkey = AppConfig->GetInt(TEXT("Audio"), TEXT("PushToTalkHotkey"));
@@ -1279,6 +1280,10 @@ void OBS::ReloadIniSettings()
     hotkey = AppConfig->GetInt(TEXT("Publish"), TEXT("StartStreamHotkey"));
     if(hotkey)
         startStreamHotkeyID = API->CreateHotkey(hotkey, OBS::StartStreamHotkey, NULL);
+
+	hotkey = AppConfig->GetInt(TEXT("Publish"), TEXT("SendCuePointHotkey"));
+	if(hotkey)
+		sendCuePointHotkeyID = API->CreateHotkey(hotkey, OBS::SendCuePointHotkey, NULL);
 
     //-------------------------------------------
     // Notification Area icon
